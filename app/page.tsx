@@ -1,5 +1,7 @@
-import Image from "next/image";
-
 export default function Home() {
-  return <div>Welcome to the world of NextJS</div>;
+  return (
+    <div className="text-violet-500 font-bold text-3xl">
+      Welcome to the world of NextJS
+    </div>
+  );
 }
