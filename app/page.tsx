@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <div className="text-violet-500 font-bold text-3xl">
+    <div className="h1-bold background-light900_dark300 text-3xl font-bold text-red-400">
       Welcome to the world of NextJS
     </div>
   );
