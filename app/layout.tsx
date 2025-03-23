@@ -4,7 +4,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 import React from "react";
 import { ThemeProvider } from "next-themes";
-import Navbar from "@/components/navigation/navbar";
+import { Toaster } from "@/components/ui/toaster";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
 const interFont = localFont({
   src: "./fonts/InterVF.ttf",
@@ -27,26 +29,31 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+const RootLayout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>) => {
+  const session = await auth();
   return (
     <html lang="en" suppressHydrationWarning={true}>
-      <body
-        className={`${interFont.className} ${spaceGroteskFont.variable}  antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          enableSystem
-          defaultTheme="system"
-          disableTransitionOnChange
+      <SessionProvider session={session}>
+        <body
+          className={`${interFont.className} ${spaceGroteskFont.variable}  antialiased`}
         >
-          <Navbar />
-          {children}
-        </ThemeProvider>
-      </body>
+          <ThemeProvider
+            attribute="class"
+            enableSystem
+            defaultTheme="system"
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+          <Toaster />
+        </body>
+      </SessionProvider>
     </html>
   );
-}
+};
+
+export default RootLayout;
