@@ -9,7 +9,7 @@ interface IAccount {
   providerAccountId: string;
 }
 
-const accountSchema = new Schema(
+const accountSchema = new Schema<IAccount>(
   {
     name: { type: String, required: true },
     provider: { type: String, required: true },
@@ -26,6 +26,6 @@ const accountSchema = new Schema(
   }
 );
 
-const Account = models?.account || model<IAccount>("Account", accountSchema);
+const Account = models?.Account || model<IAccount>("Account", accountSchema);
 
 export default Account;
