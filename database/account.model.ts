@@ -1,6 +1,6 @@
-import { model, models, Schema, Types } from "mongoose";
+import { model, models, Schema, Types, Document } from "mongoose";
 
-interface IAccount {
+export interface IAccount {
   name: string;
   provider: string;
   password?: string;
@@ -8,6 +8,8 @@ interface IAccount {
   image?: string;
   providerAccountId: string;
 }
+
+export interface IAccountDoc extends IAccount, Document {}
 
 const accountSchema = new Schema<IAccount>(
   {
