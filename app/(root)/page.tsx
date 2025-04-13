@@ -5,9 +5,16 @@ import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
 import QuestionCard from "@/components/cards/QuestionCard";
-import dbConnect from "@/lib/mongoose";
 import handleError from "@/lib/handlers/error";
-import { ValidationError } from "@/lib/http-errors";
+import { api } from "@/lib/api";
+
+const test = async () => {
+  try {
+    return await api.users.getAll();
+  } catch (error) {
+    return handleError(error);
+  }
+};
 
 const questions = [
   {
@@ -55,6 +62,8 @@ interface SearchParams {
 }
 
 const Home = async ({ searchParams }: SearchParams) => {
+  const users = await test();
+  console.log(users);
   const { query = "", filter = "" } = await searchParams;
 
   const filteredQuestions = questions.filter((question) => {
