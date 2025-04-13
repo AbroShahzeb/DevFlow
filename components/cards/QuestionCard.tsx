@@ -4,6 +4,7 @@ import Link from "next/link";
 import { title } from "process";
 import TagCard from "./TagCard";
 import Metric from "../Metric";
+import { Question } from "@/types/global";
 
 interface Props {
   question: Question;
