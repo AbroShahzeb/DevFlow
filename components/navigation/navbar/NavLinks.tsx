@@ -9,9 +9,14 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { SheetClose } from "@/components/ui/sheet";
 
-const NavLinks = ({ isMobileNav = false }) => {
+const NavLinks = ({
+  isMobileNav = false,
+  userId,
+}: {
+  isMobileNav?: boolean;
+  userId?: string;
+}) => {
   const pathname = usePathname();
-  const userId = 1;
   return (
     <>
       {sidebarLinks.map((item) => {
@@ -31,7 +36,7 @@ const NavLinks = ({ isMobileNav = false }) => {
               isActive
                 ? "primary-gradient rounded-lg text-light-900"
                 : "text-dark300_light900",
-              "flex items-center justify-start gap-4 bg-transparent p-4",
+              "flex items-center justify-start gap-4 bg-transparent p-4"
             )}
           >
             <Image
@@ -44,7 +49,7 @@ const NavLinks = ({ isMobileNav = false }) => {
             <p
               className={cn(
                 isActive ? "base-bold" : "base-medium",
-                !isMobileNav && "max-lg:hidden",
+                !isMobileNav && "max-lg:hidden"
               )}
             >
               {item.label}
