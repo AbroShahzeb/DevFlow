@@ -1,5 +1,7 @@
-const Collection = () => {
-  return <div>Collection</div>;
+import React from "react";
+
+const Collections = () => {
+  return <div>Collections</div>;
 };
 
-export default Collection;
+export default Collections;

@@ -1,19 +1,20 @@
-import React from "react";
-import NavLinks from "./navbar/NavLinks";
-import ROUTES from "@/constants/routes";
-import Link from "next/link";
-import { Button } from "../ui/button";
-import Image from "next/image";
-import { auth, signOut } from "@/auth";
 import { LogOut } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+
+import { auth, signOut } from "@/auth";
+import ROUTES from "@/constants/routes";
+
+import NavLinks from "./navbar/NavLinks";
+import { Button } from "../ui/button";
 
 const LeftSidebar = async () => {
   const session = await auth();
   const userId = session?.user?.id;
 
-  console.log("Session", session);
   return (
-    <section className="custom-scrollbar background-light900_dark200 light-border sticky left-0 top-0 h-screen flex flex-col justify-between overflow-y-auto border-r p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]">
+    <section className="custom-scrollbar background-light900_dark200 light-border sticky left-0 top-0 flex h-screen flex-col justify-between overflow-y-auto border-r p-6 pt-36 shadow-light-300 dark:shadow-none max-sm:hidden lg:w-[266px]">
       <div className="flex flex-1 flex-col gap-6">
         <NavLinks userId={userId} />
       </div>
@@ -29,10 +30,12 @@ const LeftSidebar = async () => {
           >
             <Button
               type="submit"
-              className="base-medium w-fit !bg-transparent px-4 py-3 text-dark300_light900"
+              className="base-medium w-fit !bg-transparent px-4 py-3"
             >
               <LogOut className="size-5 text-black dark:text-white" />
-              Logout
+              <span className="text-dark300_light900 max-lg:hidden">
+                Logout
+              </span>
             </Button>
           </form>
         ) : (

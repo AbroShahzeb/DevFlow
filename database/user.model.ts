@@ -12,11 +12,10 @@ export interface IUser {
 }
 
 export interface IUserDoc extends IUser, Document {}
-
-const userSchema = new Schema<IUser>(
+const UserSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
-    username: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     bio: { type: String },
     image: { type: String },
@@ -27,5 +26,6 @@ const userSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-const User = models?.User || model<IUser>("User", userSchema);
+const User = models?.User || model<IUser>("User", UserSchema);
+
 export default User;

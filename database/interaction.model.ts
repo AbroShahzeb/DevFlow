@@ -8,8 +8,7 @@ export interface IInteraction {
 }
 
 export interface IInteractionDoc extends IInteraction, Document {}
-
-const interactionSchema = new Schema<IInteraction>(
+const InteractionSchema = new Schema<IInteraction>(
   {
     user: { type: Schema.Types.ObjectId, ref: "User", required: true },
     action: { type: String, required: true },
@@ -20,4 +19,6 @@ const interactionSchema = new Schema<IInteraction>(
 );
 
 const Interaction =
-  models?.Interaction || model<IInteraction>("Interaction", interactionSchema);
+  models?.Interaction || model<IInteraction>("Interaction", InteractionSchema);
+
+export default Interaction;

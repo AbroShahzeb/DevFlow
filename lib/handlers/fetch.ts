@@ -1,7 +1,6 @@
-import { ActionResponse } from "@/types/global";
-import logger from "./logger";
-import handleError from "./error";
 import { RequestError } from "../http-errors";
+import logger from "../logger";
+import handleError from "./error";
 
 interface FetchOptions extends RequestInit {
   timeout?: number;
@@ -29,11 +28,7 @@ export async function fetchHandler<T>(
     Accept: "application/json",
   };
 
-  const headers: HeadersInit = {
-    ...defaultHeaders,
-    ...customHeaders,
-  };
-
+  const headers: HeadersInit = { ...defaultHeaders, ...customHeaders };
   const config: RequestInit = {
     ...restOptions,
     headers,
@@ -42,19 +37,23 @@ export async function fetchHandler<T>(
 
   try {
     const response = await fetch(url, config);
+
     clearTimeout(id);
 
     if (!response.ok) {
-      throw new RequestError(response.status, `HTTP Error: ${response.status}`);
+      throw new RequestError(response.status, `HTTP error: ${response.status}`);
     }
 
     return await response.json();
-  } catch (error) {
-    const err = isError(error) ? error : new Error("Unknown error");
+  } catch (err) {
+    const error = isError(err) ? err : new Error("Unknown error");
 
-    if (err.name === "AbortError") logger.warn(`Request to ${url} timed out`);
-    else logger.error(`Error fetching ${url}: ${err.message}`);
+    if (error.name === "AbortError") {
+      logger.warn(`Request to ${url} timed out`);
+    } else {
+      logger.error(`Error fetching ${url}: ${error.message}`);
+    }
 
-    return handleError(err) as ActionResponse<T>;
+    return handleError(error) as ActionResponse<T>;
   }
 }

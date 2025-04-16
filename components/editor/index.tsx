@@ -1,64 +1,64 @@
 "use client";
-// InitializedMDXEditor.tsx
-import type { ForwardedRef } from "react";
+
 import {
+  MDXEditor,
+  UndoRedo,
+  BoldItalicUnderlineToggles,
+  toolbarPlugin,
+  CodeToggle,
+  InsertCodeBlock,
+  codeBlockPlugin,
   headingsPlugin,
   listsPlugin,
-  quotePlugin,
-  thematicBreakPlugin,
-  markdownShortcutPlugin,
-  MDXEditor,
-  type MDXEditorMethods,
-  toolbarPlugin,
-  ConditionalContents,
-  ChangeCodeMirrorLanguage,
-  UndoRedo,
-  Separator,
-  BoldItalicUnderlineToggles,
-  ListsToggle,
-  InsertImage,
-  CreateLink,
-  InsertTable,
-  InsertThematicBreak,
-  InsertCodeBlock,
   linkPlugin,
+  quotePlugin,
+  markdownShortcutPlugin,
+  ListsToggle,
   linkDialogPlugin,
+  CreateLink,
+  InsertImage,
+  InsertTable,
   tablePlugin,
   imagePlugin,
-  codeBlockPlugin,
   codeMirrorPlugin,
+  ConditionalContents,
+  ChangeCodeMirrorLanguage,
+  Separator,
+  InsertThematicBreak,
   diffSourcePlugin,
+  MDXEditorMethods,
 } from "@mdxeditor/editor";
-import "@mdxeditor/editor/style.css";
-import "./dark-editor.css";
 import { basicDark } from "cm6-theme-basic-dark";
 import { useTheme } from "next-themes";
+import { Ref } from "react";
+
+import "@mdxeditor/editor/style.css";
+import "./dark-editor.css";
 
 interface Props {
   value: string;
+  editorRef: Ref<MDXEditorMethods> | null;
   fieldChange: (value: string) => void;
-  editorRef: ForwardedRef<MDXEditorMethods> | null;
 }
 
-const Editor = ({ value, fieldChange, editorRef, ...props }: Props) => {
+const Editor = ({ value, editorRef, fieldChange }: Props) => {
   const { resolvedTheme } = useTheme();
 
-  const theme = resolvedTheme === "dark" ? [basicDark] : [];
+  const themeExtension = resolvedTheme === "dark" ? [basicDark] : [];
+
   return (
     <MDXEditor
       key={resolvedTheme}
       markdown={value}
+      ref={editorRef}
       onChange={fieldChange}
-      className="background-light800_dark200 light-border-2 markdown-editor dark-editor w-full border grid"
+      className="background-light800_dark200 light-border-2 markdown-editor dark-editor grid w-full border"
       plugins={[
-        // Example Plugin Usage
         headingsPlugin(),
         listsPlugin(),
         linkPlugin(),
         linkDialogPlugin(),
-
         quotePlugin(),
-        thematicBreakPlugin(),
         markdownShortcutPlugin(),
         tablePlugin(),
         imagePlugin(),
@@ -80,49 +80,47 @@ const Editor = ({ value, fieldChange, editorRef, ...props }: Props) => {
             jsx: "JavaScript (React)",
           },
           autoLoadLanguageSupport: true,
-          codeMirrorExtensions: theme,
+          codeMirrorExtensions: themeExtension,
         }),
         diffSourcePlugin({ viewMode: "rich-text", diffMarkdown: "" }),
         toolbarPlugin({
-          toolbarContents: () => {
-            return (
-              <ConditionalContents
-                options={[
-                  {
-                    when: (editor) => editor?.editorType === "codeblock",
-                    contents: () => <ChangeCodeMirrorLanguage />,
-                  },
-                  {
-                    fallback: () => (
-                      <>
-                        <UndoRedo />
-                        <Separator />
+          toolbarContents: () => (
+            <ConditionalContents
+              options={[
+                {
+                  when: (editor) => editor?.editorType === "codeblock",
+                  contents: () => <ChangeCodeMirrorLanguage />,
+                },
+                {
+                  fallback: () => (
+                    <>
+                      <UndoRedo />
+                      <Separator />
 
-                        <BoldItalicUnderlineToggles />
-                        <Separator />
+                      <BoldItalicUnderlineToggles />
+                      <CodeToggle />
+                      <Separator />
 
-                        <ListsToggle />
-                        <Separator />
+                      <ListsToggle />
+                      <Separator />
 
-                        <CreateLink />
-                        <InsertImage />
-                        <Separator />
+                      <CreateLink />
+                      <InsertImage />
+                      <Separator />
 
-                        <InsertTable />
-                        <InsertThematicBreak />
+                      <InsertTable />
+                      <InsertThematicBreak />
+                      <Separator />
 
-                        <InsertCodeBlock />
-                      </>
-                    ),
-                  },
-                ]}
-              />
-            );
-          },
+                      <InsertCodeBlock />
+                    </>
+                  ),
+                },
+              ]}
+            />
+          ),
         }),
       ]}
-      {...props}
-      ref={editorRef}
     />
   );
 };

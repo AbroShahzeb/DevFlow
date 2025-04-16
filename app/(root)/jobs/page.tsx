@@ -1,5 +1,7 @@
-const Jobs = () => {
-  return <div>Jobs</div>;
+import React from "react";
+
+const FindJobs = () => {
+  return <div>FindJobs</div>;
 };
 
-export default Jobs;
+export default FindJobs;

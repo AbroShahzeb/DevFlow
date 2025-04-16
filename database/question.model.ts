@@ -4,16 +4,15 @@ export interface IQuestion {
   title: string;
   content: string;
   tags: Types.ObjectId[];
-  views?: number;
-  upvotes?: number;
-  downvotes?: number;
-  answers?: number;
+  views: number;
+  upvotes: number;
+  downvotes: number;
+  answers: number;
   author: Types.ObjectId;
 }
 
 export interface IQuestionDoc extends IQuestion, Document {}
-
-const questionSchema = new Schema<IQuestion>(
+const QuestionSchema = new Schema<IQuestion>(
   {
     title: { type: String, required: true },
     content: { type: String, required: true },
@@ -24,12 +23,10 @@ const questionSchema = new Schema<IQuestion>(
     answers: { type: Number, default: 0 },
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const Question =
-  models?.Question || model<IQuestion>("Question", questionSchema);
+  models?.Question || model<IQuestion>("Question", QuestionSchema);
 
 export default Question;

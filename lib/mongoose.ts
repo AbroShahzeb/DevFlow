@@ -1,9 +1,13 @@
 import mongoose, { Mongoose } from "mongoose";
-import logger from "./handlers/logger";
+
+import logger from "./logger";
+import "@/database";
 
 const MONGODB_URI = process.env.MONGO_URI as string;
 
-if (!MONGODB_URI) throw new Error("MONGO_URI is not defined");
+if (!MONGODB_URI) {
+  throw new Error("MONGODB_URI is not defined");
+}
 
 interface MongooseCache {
   conn: Mongoose | null;
@@ -11,6 +15,7 @@ interface MongooseCache {
 }
 
 declare global {
+  // eslint-disable-next-line no-var
   var mongoose: MongooseCache;
 }
 
@@ -22,15 +27,17 @@ if (!cached) {
 
 const dbConnect = async (): Promise<Mongoose> => {
   if (cached.conn) {
-    logger.info("Using existing connection");
+    logger.info("Using existing mongoose connection");
     return cached.conn;
   }
 
   if (!cached.promise) {
     cached.promise = mongoose
-      .connect(MONGODB_URI)
+      .connect(MONGODB_URI, {
+        dbName: "devflow",
+      })
       .then((result) => {
-        logger.info("Connected to DB");
+        logger.info("Connected to MongoDB");
         return result;
       })
       .catch((error) => {
@@ -40,6 +47,7 @@ const dbConnect = async (): Promise<Mongoose> => {
   }
 
   cached.conn = await cached.promise;
+
   return cached.conn;
 };
 

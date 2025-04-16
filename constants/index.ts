@@ -17,7 +17,7 @@ export const sidebarLinks = [
   {
     imgURL: "/icons/suitcase.svg",
     route: "/jobs",
-    label: "Find jobs",
+    label: "Find Jobs",
   },
   {
     imgURL: "/icons/tag.svg",

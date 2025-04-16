@@ -26,6 +26,7 @@ export class ValidationError extends RequestError {
     const formattedMessages = Object.entries(errors).map(
       ([field, messages]) => {
         const fieldName = field.charAt(0).toUpperCase() + field.slice(1);
+
         if (messages[0] === "Required") {
           return `${fieldName} is required`;
         } else {
@@ -54,7 +55,7 @@ export class ForbiddenError extends RequestError {
 
 export class UnauthorizedError extends RequestError {
   constructor(message: string = "Unauthorized") {
-    super(403, message);
+    super(401, message);
     this.name = "UnauthorizedError";
   }
 }
